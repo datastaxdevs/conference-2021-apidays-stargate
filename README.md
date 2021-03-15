@@ -7,6 +7,14 @@
 
 This intructions will lead you to step by step operations for the workshop on ASTRA + STARGATE for ApiDays Helsinki
 
+## Table of content
+
+1. [Create Astra Instance](#1-prerequisite-install-docker-and-docker-compose)
+2. [Working with Cassandra](#2-start-the-demo)
+3. [Working with REST API](#3-use-cql-api)
+4. [Working with DOCUMENT API](#4-use-rest-api-swagger)
+5. [Working with GRAPHQL API](#5-use-document-api-swagger)
+
 ## 1. Create Astra Instance
 
 **`ASTRA`** is the simplest way to run Cassandra with zero operations at all - just push the button and get your cluster. No credit card required, $25.00 USD credit every month, roughly 5M writes, 30M reads, 40GB storage monthly - sufficient to run small production workloads.  
@@ -117,40 +125,28 @@ select * from videos;
 select * from videos where videoid=e466f561-4ea4-4eb7-8dcc-126e0fbfd573;
 ```
 
-## 3. Using REST and Document APIS
+## 3. Working with REST API
 
-## 4. Use REST API (swagger)
+To use the API we will need a token please create a token following the instructions here:
 
-This walkthrough has been realized using the [REST API Quick Start](https://stargate.io/docs/stargate/0.1/quickstart/quick_start-rest.html)
+✅ [Create a token for your app](https://docs.datastax.com/en/astra/docs/manage-application-tokens.html) to use in the settings screen
 
-
-**✅  Generate an auth token** :
-
-```bash
-curl -L -X POST 'http://localhost:8081/v1/auth' \
-  -H 'Content-Type: application/json' \
-  --data-raw '{
-    "username": "cassandra",
-    "password": "cassandra"
-}'
-```
-
-Copy the token value (here `74be42ef-3431-4193-b1c1-cd8bd9f48132`) in your clipboard.
+Copy the token value (eg `AstraCS:KDfdKeNREyWQvDpDrBqwBsUB:ec80667c....`) in your clipboard and save the CSV this value would not be provided afterward.
 
 **👁️ Expected output**
-```
-{"authToken":"74be42ef-3431-4193-b1c1-cd8bd9f48132"}
-```
+![image](pics/astra-token.png?raw=true)
+
+Now launch the swagger UI
+![image](pics/launch-swagger.png?raw=true)
+
 
 **✅ List keyspaces** : 
 
 Locate the `SCHEMAS` part of the API
 
-![image](pics/swagger-general.png?raw=true)
+![image](pics/swagger-schemas.png?raw=true)
 
- Localt `listAllKeyspaces` [method on GET](http://localhost:8082/swagger-ui/#/schemas/listAllKeyspaces)
-
-![image](pics/swagger-list-keyspace.png?raw=true)
+ Local `listAllKeyspaces`
 
 - Click `Try it out`
 - Provide your token in the field `X-Cassandra-Token`
@@ -158,7 +154,7 @@ Locate the `SCHEMAS` part of the API
 
 **✅ Creating a keyspace2** : 
 
-- [createKeyspace](http://localhost:8082/swagger-ui/#/schemas/createKeyspace)
+- [createKeyspace]
 - Data
 ```json
 {"name": "keyspace2","replicas": 3}
@@ -166,7 +162,7 @@ Locate the `SCHEMAS` part of the API
 
 **✅ Creating a Table** : 
 
-- [addTable](http://localhost:8082/swagger-ui/#/schemas/addTable)
+- [addTable]
 - X-Cassandra-Token: `<your_token>`
 - keyspace: `keyspace2`
 - Data
@@ -188,7 +184,7 @@ Locate the `SCHEMAS` part of the API
         "typeDefinition": "text"
       },
         {
-        "name": "favorite color",
+        "name": "color",
         "typeDefinition": "text"
       }
     ],
@@ -208,70 +204,39 @@ Locate the `SCHEMAS` part of the API
 
 Now Locate the `DATA` part of the API
 
+**👁️ Expected output**
+![image](pics/astra-data.png?raw=true)
+
 **✅ Insert a row** : 
 
-- [createRow](http://localhost:8082/swagger-ui/#/data/createRow)
+- [createRow]
 - X-Cassandra-Token: `<your_token>`
 - keyspace: `keyspace2`
 - table: `users`
 - Data
 ```json
 {   
-    "firstname": "Mookie",
-    "lastname": "Betts",
-    "email": "mookie.betts@gmail.com",
-    "favorite color": "blue"
-}
-```
-
-```json
-{
-    "firstname": "Janesha",
-    "lastname": "Doesha",
-    "email": "janesha.doesha@gmail.com",
-    "favorite color": "grey"
+ "columns":[
+    {"name":"firstname","value":"Mookie"},
+    {"name":"lastname","value":"Betts"},
+    {"name":"email","value":"mookie.betts@gmail.com"},
+    {"name":"color","value":"blue"}
+ ]
 }
 ```
 
 **✅ Read data** : 
 
-- [getAllRows](http://localhost:8082/swagger-ui/#/data/getAllRows)
+- [getAllRows]
 - X-Cassandra-Token: `<your_token>`
 - keyspace: `keyspace2`
 - table: `users`
 
-
-**✅ Update a row** : 
-
-You can do them in curl
-
-```
-export AUTH_TOKEN=<your_token>
-```
-
-```
-curl --location \
---request PUT 'localhost:8082/v2/keyspaces/users_keyspace/users/Mookie/Betts' \
---header "X-Cassandra-Token: $AUTH_TOKEN" \
---header 'Content-Type: application/json' \
---data '{
-    "email": "mookie.betts.new-email@email.com"
-}'
-```
-
-**✅ Delete a row** : 
-```
-curl --location \
---request DELETE 'localhost:8082/v2/keyspaces/users_keyspace/users/Mookie' \
---header "X-Cassandra-Token: $AUTH_TOKEN" \
---header 'Content-Type: application/json'
-```
-
 [🏠 Back to Table of Contents](#table-of-content)
 
-## 5. Use Document API (swagger+curl)
+## 4. Working with DOCUMENT API
 
-This walkthrough has been realized using the [Quick Start](https://stargate.io/docs/stargate/0.1/quickstart/quick_start-document.html)
+This walkthrough has been realized using the [Quick Start](https://stargate.io/docs/stargate/1.0/quickstart/quick_start-document.html)
 
 **✅ Generate an auth token** :
 
@@ -430,9 +395,9 @@ curl -L -X  GET 'localhost:8082/v2/namespaces/namespace1/collections/videos?wher
 
 [🏠 Back to Table of Contents](#table-of-content)
 
-## 6. Use GraphQL API (portal)
+## 5. Working with GRAPHQL QPI
 
-This walkthrough has been realized using the [GraphQL Quick Start](https://stargate.io/docs/stargate/0.1/quickstart/quick_start-graphql.html)
+This walkthrough has been realized using the [GraphQL Quick Start](https://stargate.io/docs/stargate/1.0/quickstart/quick_start-graphql.html)
 
 Same as Rest API generate a `auth token` 
 
@@ -453,9 +418,8 @@ export AUTH_TOKEN=7c37bda5-7360-4d39-96bc-9765db5773bc
 
 **✅ Open GraphQL Playground** :
 
-- You should be able to access the GRAPH QL PORTAL on [http://localhost:8080/playground](http://localhost:8080/playground)
-
-You can check on the right of the playground that you have access to documentation and schema which is the neat part about graphQL
+Open the playground
+![image](pics/launch-graphql.png?raw=true)
 
 **👁️ Expected output**
 ![image](pics/playground-home.png?raw=true)

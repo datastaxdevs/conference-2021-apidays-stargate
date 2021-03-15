@@ -1,4 +1,9 @@
-# apidays2021-stargate
+## 🎓🔥 STARGATE, a gateway for multi models data API 🔥🎓
+
+[![License Apache2](https://img.shields.io/hexpm/l/plug.svg)](http://www.apache.org/licenses/LICENSE-2.0)
+[![Discord](https://img.shields.io/discord/685554030159593522)](https://discord.com/widget?id=685554030159593522&theme=dark)
+
+![image](pics/splash.png?raw=true)
 
 This intructions will lead you to step by step operations for the workshop on ASTRA + STARGATE for ApiDays Helsinki
 

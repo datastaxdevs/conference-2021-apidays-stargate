@@ -240,27 +240,14 @@ Now Locate the `DATA` part of the API
 
 This walkthrough has been realized using the [Quick Start](https://stargate.io/docs/stargate/1.0/quickstart/quick_start-document.html)
 
-**✅ Generate an auth token** :
+locate the Document part in the Swagger UI
 
-Same as Rest API generate a `auth token` 
-```bash
-curl -L -X POST 'http://localhost:8081/v1/auth' \
-  -H 'Content-Type: application/json' \
-  --data-raw '{
-    "username": "cassandra",
-    "password": "cassandra"
-}'
-```
+![image](pics/swagger-docs.png?raw=true)
 
-Save output as an environment variable
-
-```
-export AUTH_TOKEN=5d746e40-97cf-490b-ab0d-68cfbc5d2ef3
-```
 
 **✅ Creating a namespace** :
 
-- Access [createNamespace](http://localhost:8082/swagger-ui/#/documents/createNamespace) in swagger UI
+- Access [createNamespace]
 - Fill with Header `X-Cassandra-Token` with `<your_token>`
 - Use this payload as JSON
 ```json
@@ -269,7 +256,7 @@ export AUTH_TOKEN=5d746e40-97cf-490b-ab0d-68cfbc5d2ef3
 
 **✅ Checking namespace existence** :
 
-- Access [getAllNamespaces](http://localhost:8082/swagger-ui/#/documents/getAllNamespaces) in swagger UI
+- Access [getAllNamespaces]
 - Fill with Header `X-Cassandra-Token` with `<your_token>`
 - For `raw` you can use either `true` or `false`
 
@@ -293,14 +280,8 @@ export AUTH_TOKEN=5d746e40-97cf-490b-ab0d-68cfbc5d2ef3
 
 **✅ Create a document** :
 
-*Note: operations requiring providing `namespace` and `collections` on the swagger UI seems not functional. We are switching to CURL the API is working, this is a documentation bug that has been notified to the development team.*
-
-```bash
-curl --location \
---request POST 'localhost:8082/v2/namespaces/namespace1/collections/videos' \
---header "X-Cassandra-Token: $AUTH_TOKEN" \
---header 'Content-Type: application/json' \
---data '{
+```json
+{
    "videoid":"e466f561-4ea4-4eb7-8dcc-126e0fbfd573",
      "email":"clunven@sample.com",
      "title":"A Second videos",
@@ -312,7 +293,7 @@ curl --location \
         "mp4": {"width":1,"height":1},
         "ogg": {"width":1,"height":1}
      }
-}'
+}
 ```
 
 **👁️ Expected output**:
@@ -372,10 +353,10 @@ curl -L \
 
 **✅ Search for document by properties** :
 
-```bash
-curl -L -X  GET 'localhost:8082/v2/namespaces/namespace1/collections/videos?where=\{"email":\{"$eq":"clunven@sample.com"\}\}' \
---header "X-Cassandra-Token: $AUTH_TOKEN" \
---header 'Content-Type: application/json'
+```JSON
+{"email":
+   { "$eq":"clunven@sample.com" }
+} 
 ```
 
 **👁️ Expected output**:
@@ -400,23 +381,6 @@ curl -L -X  GET 'localhost:8082/v2/namespaces/namespace1/collections/videos?wher
 ## 5. Working with GRAPHQL API
 
 This walkthrough has been realized using the [GraphQL Quick Start](https://stargate.io/docs/stargate/1.0/quickstart/quick_start-graphql.html)
-
-Same as Rest API generate a `auth token` 
-
-**✅ Generate Auth token** :
-```bash
-curl -L -X POST 'http://localhost:8081/v1/auth' \
-  -H 'Content-Type: application/json' \
-  --data-raw '{
-    "username": "cassandra",
-    "password": "cassandra"
-}'
-```
-
-Save output as an environment variable
-```
-export AUTH_TOKEN=7c37bda5-7360-4d39-96bc-9765db5773bc
-```
 
 **✅ Open GraphQL Playground** :
 

@@ -397,7 +397,7 @@ curl -L -X  GET 'localhost:8082/v2/namespaces/namespace1/collections/videos?wher
 
 [🏠 Back to Table of Contents](#table-of-content)
 
-## 5. Working with GRAPHQL QPI
+## 5. Working with GRAPHQL API
 
 This walkthrough has been realized using the [GraphQL Quick Start](https://stargate.io/docs/stargate/1.0/quickstart/quick_start-graphql.html)
 

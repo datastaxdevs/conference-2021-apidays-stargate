@@ -9,11 +9,11 @@ This intructions will lead you to step by step operations for the workshop on AS
 
 ## Table of content
 
-1. [Create Astra Instance](#1-prerequisite-install-docker-and-docker-compose)
-2. [Working with Cassandra](#2-start-the-demo)
-3. [Working with REST API](#3-use-cql-api)
-4. [Working with DOCUMENT API](#4-use-rest-api-swagger)
-5. [Working with GRAPHQL API](#5-use-document-api-swagger)
+1. [Create Astra Instance](#1-create-astra-instance)
+2. [Working with Cassandra](#2-working-with-cassandra)
+3. [Working with REST API](#3-working-with-rest-api)
+4. [Working with DOCUMENT API](#4-working-with-document-api)
+5. [Working with GRAPHQL API](#5-working-with-graphql-api)
 
 ## 1. Create Astra Instance
 
@@ -124,6 +124,8 @@ select * from videos;
 ```sql
 select * from videos where videoid=e466f561-4ea4-4eb7-8dcc-126e0fbfd573;
 ```
+
+[🏠 Back to Table of Contents](#table-of-content)
 
 ## 3. Working with REST API
 
@@ -444,6 +446,7 @@ Add the auth token to the HTTP Headers box in the lower lefthand corner:
 ```
 
 **👁️ Expected output**
+
 ![image](pics/graphql-createkeyspace.png?raw=true)
 
 **✅ Creating a Table** :
@@ -475,6 +478,7 @@ mutation {
 ```
 
 **👁️ Expected output**
+
 ![image](pics/graphql-createtables.png?raw=true)
 
 **✅ Populating Table** :
@@ -506,6 +510,7 @@ mutation {
 }
 ```
 **👁️ Expected output**
+
 ![image](pics/graphql-insertdata.png?raw=true)
 
 
@@ -524,50 +529,14 @@ query oneBook {
 ```
 
 **👁️ Expected output**
-![image](pics/graphql-readdata.png?raw=true)
 
+![image](pics/graphql-readdata.png?raw=true)
 
 [🏠 Back to Table of Contents](#table-of-content)
 
-## 7. Create your ASTRA Instance
 
-**✅ Create an free-forever Cassandra database with DataStax Astra**: [click here to get started](https://astra.datastax.com/register?utm_source=github&utm_medium=referral&utm_campaign=spring-petclinic-reactive) 🚀
+## THE END
 
-
-![Astra Registration Screen](pics/db-auth.png?raw=true)
-
-
-**✅ Use the form to create new database**
-
-On the Astra home page locate the **Add Database** button
-
-![Astra Database Creation Form](pics/db-creation-1.png?raw=true)
-
-Select the **free tier** plan, this is a true free tier, free forever and no payment method asked 🎉 🎉
-
-![Astra Database Creation Form](pics/db-creation-2.png?raw=true)
-
-Select the proper region and click the `configure` button. The number of regions and cloud providers are limited in the free tier but please notice you can run the DB on any cloud with any VPC Peering.
-
-![Astra Database Creation Form](pics/db-creation-3.png?raw=true)
-
-Fill the `database name`, `keyspace name`, `username` and `password`. *Please remember your password as you will be asked to provide it when application start the first time.*
-
-![Astra Database Creation Form](pics/db-creation-4.png?raw=true)
-
-**✅ View your Database and connect**
-
-View your database. It may take 2-3 minutes for your database to spin up. You will receive an email at that point.
-
-**👁️ Expected output**
-
-*Initializing*
-
-![my-pic](https://github.com/datastaxdevs/shared-assets/blob/master/astra/dashboard-pending-1000.png?raw=true)
-
-Once the database is ready, notice how the status changes from `pending` to `Active` and Astra enables the **connect** button.
-
-![my-pic](https://github.com/datastaxdevs/shared-assets/blob/master/astra/dashboard-withdb-1000.png?raw=true)
-
+Congratulation your made it to the END.
 
 

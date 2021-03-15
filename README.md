@@ -453,13 +453,13 @@ First, let’s navigate to your new keyspace `library` inside the playground. Ch
 
 - Use this query
 ```
-mutation {
-  moby: insertBooks(value: {title:"Moby Dick", author:"Herman Melville"}) {
+mutation insert2Books {
+  moby: insertbooks(value: {title:"Moby Dick", author:"Herman Melville"}) {
     value {
       title
     }
   }
-  catch22: insertBooks(value: {title:"Catch-22", author:"Joseph Heller"}) {
+  catch22: insertbooks(value: {title:"Catch-22", author:"Joseph Heller"}) {
     value {
       title
     }

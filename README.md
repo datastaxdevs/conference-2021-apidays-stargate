@@ -345,21 +345,12 @@ This walkthrough has been realized using the [Quick Start](https://stargate.io/d
 
 locate the Document part in the Swagger UI
 
-![image](pics/swagger-docs.png?raw=true)
+![image](https://raw.githubusercontent.com/datastaxdevs/conference-2021-apachecon-stargate/main/pics/swagger-docs.png?raw=true)
 
+**✅ 4a. List Namespaces** :
 
-**✅ Creating a namespace** :
+![image](https://raw.githubusercontent.com/datastaxdevs/conference-2021-apachecon-stargate/main/pics/swagger-doc-listnamespaces.png?raw=true)
 
-- Access [createNamespace]
-- Fill with Header `X-Cassandra-Token` with `<your_token>`
-- Use this payload as JSON
-```json
-{ "name": "namespace1", "replicas": 3 }
-```
-
-**✅ Checking namespace existence** :
-
-- Access [getAllNamespaces]
 - Fill with Header `X-Cassandra-Token` with `<your_token>`
 - For `raw` you can use either `true` or `false`
 
@@ -381,7 +372,16 @@ locate the Document part in the Swagger UI
 }
 ```
 
-**✅ Create a document** :
+**✅ 4b. Create a document** :
+
+*Note: operations requiring providing `namespace` and `collections` on the swagger UI seems not functional. We are switching to CURL the API is working, this is a documentation bug that has been notified to the development team.*
+
+![image](https://raw.githubusercontent.com/datastaxdevs/conference-2021-apachecon-stargate/main/pics/swagger-doc-create.png?raw=true)
+
+- X-Cassandra-Token: `<your_token>`
+- namespaceName: `ks1`
+- collectionname: `col1`
+- Click `Execute`
 
 ```json
 {
@@ -402,81 +402,43 @@ locate the Document part in the Swagger UI
 **👁️ Expected output**:
 ```json
 {
-  "documentId":"5d746e40-97cf-490b-ab0d-68cfbc5d2ef3"
+  "documentId":"<your_document_id>"
 }
 ```
 
-**✅ Retrieve documents** :
+**✅ 4c. Retrieve documents** :
 
-```bash
-curl --location \
---request GET 'localhost:8082/v2/namespaces/namespace1/collections/videos?page-size=3' \
---header "X-Cassandra-Token: $AUTH_TOKEN" \
---header 'Content-Type: application/json'
-```
+![image](https://raw.githubusercontent.com/datastaxdevs/conference-2021-apachecon-stargate/main/pics/swagger-doc-search.png?raw=true)
 
-**👁️ Expected output**:
+- X-Cassandra-Token: `<your_token>`
+- namespaceName: `ks1`
+- collectionname: `col1`
+- Click `Execute`
+
+
+**✅ 4d. Retrieve 1 document** :
+
+![image](https://raw.githubusercontent.com/datastaxdevs/conference-2021-apachecon-stargate/main/pics/swagger-doc-get.png?raw=true)
+
+- X-Cassandra-Token: `<your_token>`
+- namespaceName: `ks1`
+- collectionname: `col1`
+- documentId: `<your_document_id>`
+- Click `Execute`
+
+
+**✅ 4e. Search for document by properties** :
+
+![image](https://raw.githubusercontent.com/datastaxdevs/conference-2021-apachecon-stargate/main/pics/swagger-doc-search.png?raw=true)
+
+- X-Cassandra-Token: `<your_token>`
+- namespaceName: `ks1`
+- collectionname: `col1`
+- documentId: `<your_document_id>`
+- WhereClause
+
 ```json
-{
-  "data":{
-    "5d746e40-97cf-490b-ab0d-68cfbc5d2ef3":{
-      "email":"clunven@sample.com",
-      "formats":{"mp4":{"height":1,"width":1},"ogg":{"height":1,"width":1}},"frames":[1,2,3,4],
-      "tags":["cassandra","accelerate","2020"],"title":"A Second videos","upload":"2020-02-26 15:09:22 +00:00","url":"http://google.fr","videoid":"e466f561-4ea4-4eb7-8dcc-126e0fbfd573"
-     }
-   }
-}
-```
-
-**✅ Retrieve 1 document** :
-
-```bash
-curl -L \
--X GET 'localhost:8082/v2/namespaces/namespace1/collections/videos/5d746e40-97cf-490b-ab0d-68cfbc5d2ef3' \
---header "X-Cassandra-Token: $AUTH_TOKEN" \
---header 'Content-Type: application/json'
-```
-
-**👁️ Expected output**:
-```json
-{
-  "documentId":"5d746e40-97cf-490b-ab0d-68cfbc5d2ef3",
-  "data":{
-     "email":"clunven@sample.com",
-     "formats":{"mp4":{"height":1,"width":1},"ogg":{"height":1,"width":1}},
-     "frames":[1,2,3,4],
-     "tags":["cassandra","accelerate","2020"],
-     "title":"A Second videos",
-     "upload":"2020-02-26 15:09:22 +00:00",
-     "url":"http://google.fr",
-     "videoid":"e466f561-4ea4-4eb7-8dcc-126e0fbfd573"
-   }
-}
-```
-
-**✅ Search for document by properties** :
-
-```JSON
-{"email":
-   { "$eq":"clunven@sample.com" }
-} 
-```
-
-**👁️ Expected output**:
-```json
-{"data":{
-   "5d746e40-97cf-490b-ab0d-68cfbc5d2ef3":{
-      "email":"clunven@sample.com",
-      "formats":{"mp4":{"height":1,"width":1},"ogg":{"height":1,"width":1}},
-      "frames":[1,2,3,4],
-      "tags":["cassandra","accelerate","2020"],
-      "title":"A Second videos",
-      "upload":"2020-02-26 15:09:22 +00:00",
-      "url":"http://google.fr",
-      "videoid":"e466f561-4ea4-4eb7-8dcc-126e0fbfd573"
-    }
-  }
-}
+{"email": {"$eq": "clunven@sample.com"}}
 ```
 
 [🏠 Back to Table of Contents](#table-of-content)

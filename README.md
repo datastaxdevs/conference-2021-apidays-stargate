@@ -133,14 +133,20 @@ select * from videos where videoid=e466f561-4ea4-4eb7-8dcc-126e0fbfd573;
 
 To use the API we will need a token please create a token following the instructions here:
 
-✅ 3a. [Create a token for your app](https://docs.datastax.com/en/astra/docs/manage-application-tokens.html) to use in the settings screen
+#### ✅ 3a. Create a token
+
+Follow the documentation to [create a token for your app](https://docs.datastax.com/en/astra/docs/manage-application-tokens.html).
+
+Role: `Database Administrator`
 
 Copy the token value (eg `AstraCS:KDfdKeNREyWQvDpDrBqwBsUB:ec80667c....`) in your clipboard and save the CSV this value would not be provided afterward.
 
 **👁️ Expected output**
+
 ![image](pics/astra-token.png?raw=true)
 
 Now launch the swagger UI
+
 ![image](pics/launch-swagger.png?raw=true)
 
 This walkthrough has been realized using the [REST API Quick Start](https://stargate.io/docs/stargate/0.1/quickstart/quick_start-rest.html). Here we will the the [DATA](http://localhost:8082/swagger-ui/#/data) or SwaggerUI
@@ -155,20 +161,37 @@ This walkthrough has been realized using the [REST API Quick Start](https://star
 - Provide your token in the field `X-Cassandra-Token`
 - Click on `Execute`
 
+#### ✅ 3c. List Tables
 
-**✅ Creating a keyspace2** : 
+- [GET /v2/schemas/keyspaces/{keyspaceName}/tables](http://localhost:8082/swagger-ui/#/schemas/getAllTables)
 
-- [createKeyspace]
-- Data
-```json
-{"name": "keyspace2","replicas": 3}
-```
+![image](https://raw.githubusercontent.com/datastaxdevs/conference-2021-apachecon-stargate/main/pics/swagger-list-tables.png?raw=true)
 
-**✅ Creating a Table** : 
+- Click `Try it out`
+- Provide your token in the field `X-Cassandra-Token`
+- keyspace: `ks1`
+- Click on `Execute`
 
-- [addTable]
+#### ✅ 3d. List Types
+
+- [GET /v2/schemas/keyspaces/{keyspaceName}/types](http://localhost:8082/swagger-ui/#/schemas/findAll)
+
+![image](https://raw.githubusercontent.com/datastaxdevs/conference-2021-apachecon-stargate/main/pics/swagger-list-types.png?raw=true)
+
+- Click `Try it out`
 - X-Cassandra-Token: `<your_token>`
-- keyspace: `keyspace2`
+- keyspace: `ks1`
+- Click on `Execute`
+
+#### ✅ 3e Create a Table
+
+- [POST /v2/schemas/keyspaces/{keyspaceName}/tables](http://localhost:8082/swagger-ui/#/schemas/createTable)
+
+![image](https://raw.githubusercontent.com/datastaxdevs/conference-2021-apachecon-stargate/main/pics/swagger-create-table.png?raw=true)
+
+- Click `Try it out`
+- X-Cassandra-Token: `<your_token>`
+- keyspace: `ks1`
 - Data
 ```json
 {
@@ -206,35 +229,113 @@ This walkthrough has been realized using the [REST API Quick Start](https://star
 }
 ```
 
-Now Locate the `DATA` part of the API
-
 **👁️ Expected output**
-![image](pics/astra-data.png?raw=true)
 
-**✅ Insert a row** : 
-
-- [createRow]
-- X-Cassandra-Token: `<your_token>`
-- keyspace: `keyspace2`
-- table: `users`
-- Data
 ```json
-{   
- "columns":[
-    {"name":"firstname","value":"Mookie"},
-    {"name":"lastname","value":"Betts"},
-    {"name":"email","value":"mookie.betts@gmail.com"},
-    {"name":"color","value":"blue"}
- ]
+{
+  "name": "users"
 }
 ```
 
-**✅ Read data** : 
+#### ✅ 3f. Insert Rows
 
-- [getAllRows]
+*Notice than for the DML you move to `DATA`. Make sure you are using url with `V2`, `V1` would also work but this is NOT the same payload.* 
+
+- [POST /v2/keyspaces/{keyspaceName}/{tableName}](http://localhost:8082/swagger-ui/#/data/createRow)
+
+![image](https://raw.githubusercontent.com/datastaxdevs/conference-2021-apachecon-stargate/main/pics/swagger-addrows.png?raw=true)
+
 - X-Cassandra-Token: `<your_token>`
-- keyspace: `keyspace2`
-- table: `users`
+- keyspaceName: `ks1`
+- tableName: `users`
+- Data
+```json
+{   
+    "firstname": "Cedrick",
+    "lastname": "Lunven",
+    "email": "c.lunven@gmail.com",
+    "color": "blue"
+}
+```
+
+You can note that the output code is `201` and return your primary key `{ "firstname": "Cedrick","lastname": "Lunven" }
+
+- You can add a second record changing only the payload
+```json
+{
+    "firstname": "David",
+    "lastname": "Gilardi",
+    "email": "d.gilardi@gmail.com",
+    "color": "blue"
+}
+```
+
+- Add a third
+```json
+{
+    "firstname": "Kirsten",
+    "lastname": "Hunter",
+    "email": "k.hunter@gmail.com",
+    "color": "pink"
+}
+```
+
+#### ✅ 3g. Read multiple rows
+
+- [GET /v2/keyspaces/{keyspaceName}/{tableName}/rows](http://localhost:8082/swagger-ui/#/data/getAllRows_1)
+![image](https://raw.githubusercontent.com/datastaxdevs/conference-2021-apachecon-stargate/main/pics/swagger-listrows.png?raw=true)
+
+- X-Cassandra-Token: `<your_token>`
+- keyspaceName: `ks1`
+- tableName: `users`
+- Click Execute
+
+- Notice how now you can only limited return fields
+
+- fields: `firstname, lastname`
+
+#### ✅ 3h. Read a single partition
+
+- [GET /v2/keyspaces/{keyspaceName}/{tableName}/{primaryKey}](http://localhost:8082/swagger-ui/#/data/getRows_1)
+
+![image](https://raw.githubusercontent.com/datastaxdevs/conference-2021-apachecon-stargate/main/pics/swagger-readrows.png?raw=true)
+
+- X-Cassandra-Token: `<your_token>`
+- keyspaceName: `ks1`
+- tableName: `users`
+- primaryKey; 'Cedrick`
+- Click Execute
+
+```diff
+- Important: The Swagger user interface is limited as of now and you cannot test a composite key (here adding Lunven). This is a bug in the UI not the API.
+```
+
+#### ✅ 3i. Delete a row
+
+- [DELETE /v2/keyspaces/{keyspaceName}/{tableName}/{primaryKey}](http://localhost:8082/swagger-ui/#/data/deleteRows)
+
+![image](https://raw.githubusercontent.com/datastaxdevs/conference-2021-apachecon-stargate/main/pics/swagger-deleterows.png?raw=true)
+
+- X-Cassandra-Token: `<your_token>`
+- keyspaceName: `ks1`
+- tableName: `users`
+- primaryKey; 'Cedrick`
+- Click Execute
+
+#### ✅ 3j. Searches
+
+- [GET /v2/keyspaces/{keyspaceName}/{tableName}](http://localhost:8082/swagger-ui/#/data/getRowWithWhere)
+
+![image](https://raw.githubusercontent.com/datastaxdevs/conference-2021-apachecon-stargate/main/pics/swagger-searchrows.png?raw=true)
+
+
+- X-Cassandra-Token: `<your_token>`
+- keyspaceName: `ks1`
+- tableName: `users`
+- whereClause; '{"firstname": {"$eq":"David"}}`
+- Click Execute
+
+I let you try with `{"lastname": {"$eq":"Gilardi"}}`.. expected right ?
 
 [🏠 Back to Table of Contents](#table-of-content)
 

@@ -33,7 +33,7 @@ You will find below which values to enter for each field.
 
 - **For the database name** - `free_db.` While Astra allows you to fill in these fields with values of your own choosing, please follow our recommendations to ensure the application runs properly.
 
-- **For the keyspace name** - `keyspace1`. It's really important that you use the name "free" for the code to work.
+- **For the keyspace name** - `ks1`. It's really important that you use the name "free" for the code to work.
 
 _You can technically use whatever you want and update the code to reflect the keyspace. This is really to get you on a happy path for the first run._
 
@@ -51,6 +51,8 @@ The status will change to `Active` when the database is ready, this will only ta
 
 **✅ Check that our keyspace exist**
 
+Click your database name, locate the ``CQL Console` TAB and enter this first command:
+
 ```sql
 describe keyspaces;
 ```
@@ -58,7 +60,7 @@ describe keyspaces;
 **✅ Create Entities**
 
 ```sql
-use keyspace1;
+use ks1;
 
 CREATE TYPE IF NOT EXISTS video_format (
   width   int,
@@ -77,7 +79,7 @@ CREATE TABLE IF NOT EXISTS videos (
  PRIMARY KEY (videoid)
 );
 
-describe keyspace1;
+describe ks1;
 ```
 
 **✅ Use the data model** :
@@ -131,7 +133,7 @@ select * from videos where videoid=e466f561-4ea4-4eb7-8dcc-126e0fbfd573;
 
 To use the API we will need a token please create a token following the instructions here:
 
-✅ [Create a token for your app](https://docs.datastax.com/en/astra/docs/manage-application-tokens.html) to use in the settings screen
+✅ 3a. [Create a token for your app](https://docs.datastax.com/en/astra/docs/manage-application-tokens.html) to use in the settings screen
 
 Copy the token value (eg `AstraCS:KDfdKeNREyWQvDpDrBqwBsUB:ec80667c....`) in your clipboard and save the CSV this value would not be provided afterward.
 
@@ -141,18 +143,18 @@ Copy the token value (eg `AstraCS:KDfdKeNREyWQvDpDrBqwBsUB:ec80667c....`) in you
 Now launch the swagger UI
 ![image](pics/launch-swagger.png?raw=true)
 
+This walkthrough has been realized using the [REST API Quick Start](https://stargate.io/docs/stargate/0.1/quickstart/quick_start-rest.html). Here we will the the [DATA](http://localhost:8082/swagger-ui/#/data) or SwaggerUI
 
-**✅ List keyspaces** : 
+#### ✅ 3b. List keyspaces
 
-Locate the `SCHEMAS` part of the API
-
-![image](pics/swagger-schemas.png?raw=true)
-
- Local `listAllKeyspaces`
+- [`GET: /v2/schemas/keyspaces`](http://localhost:8082/swagger-ui/#/schemas/getAllKeyspaces)
+ 
+![image](https://raw.githubusercontent.com/datastaxdevs/conference-2021-apachecon-stargate/main/pics/swagger-list-keyspace.png?raw=true)
 
 - Click `Try it out`
 - Provide your token in the field `X-Cassandra-Token`
 - Click on `Execute`
+
 
 **✅ Creating a keyspace2** : 
 

@@ -345,14 +345,13 @@ This walkthrough has been realized using the [Quick Start](https://stargate.io/d
 
 locate the Document part in the Swagger UI
 
-![image](https://raw.githubusercontent.com/datastaxdevs/conference-2021-apachecon-stargate/main/pics/swagger-docs.png?raw=true)
+![image](pics/swagger-docs.png?raw=true)
 
 **✅ 4a. List Namespaces** :
 
 ![image](https://raw.githubusercontent.com/datastaxdevs/conference-2021-apachecon-stargate/main/pics/swagger-doc-listnamespaces.png?raw=true)
 
 - Fill with Header `X-Cassandra-Token` with `<your_token>`
-- For `raw` you can use either `true` or `false`
 
 **👁️ Expected output**
 ```json
@@ -361,10 +360,8 @@ locate the Document part in the Swagger UI
     { "name": "system_distributed" },
     { "name": "system" },
     { "name": "data_endpoint_auth"},
-    { "name": "keyspace1" },
-    { "name": "namespace1"},
     { "name": "system_schema"},
-    { "name": "keyspace2" },
+    { "name": "ks1" },
     { "name": "stargate_system"},
     { "name": "system_auth" },
     { "name": "system_traces"}
@@ -459,24 +456,12 @@ Open the playground
 
 Before you can start using the GraphQL API, you must first create a Cassandra keyspace and at least one table in your database. If you are connecting to a Cassandra database with existing schema, you can skip this step.
 
-Inside the GraphQL playground, navigate to http://localhost:8080/graphql-schema and create a keyspace by executing the following mutation:
+![image](pics/create-keyspace-1.png?raw=true)
 
-```
-mutation createKeyspaceLibrary {
-  createKeyspace(name:"library", replicas: 1)
-}
-```
+Then provide the keyspace name `library`:
 
-Add the auth token to the HTTP Headers box in the lower lefthand corner:
-```
-{
-  "x-cassandra-token":"7c37bda5-7360-4d39-96bc-9765db5773bc"
-}
-```
+![image](pics/create-keyspace-2.png?raw=true)
 
-**👁️ Expected output**
-
-![image](pics/graphql-createkeyspace.png?raw=true)
 
 **✅ Creating a Table** :
 
